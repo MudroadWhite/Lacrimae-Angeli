@@ -1,0 +1,4 @@
+-R . PM
+-arg -impredicative-set -arg -w -arg -stdlib-vector
+./pm/ch1.v
+./pm/lib.v
