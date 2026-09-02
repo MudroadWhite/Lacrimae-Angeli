@@ -24,16 +24,11 @@ Theorem test_impl {n : nat} (X Y Z : Order n) :
   Admitted.
 
 Theorem test_proof (X Y Z : Order 1) :
-  PM_asserted 
-    (PM_imp (PM_and X Y) (PM_and X Y)).
+  PM_asserted (PM_and X (PM_and Y Z))
+  -> PM_asserted (PM_and X Y).
 Proof.
   (* TODO: write something... *)
 Admitted.
-(* TODO: 
-- when rewrite on a theorem, unbox the pm_asserted 
-- when boxing/unboxing the theorem, try to preserve the order information
-*)
-
 (* 
 - Should we only shift asserted propositions or directly on propositions? 
 - Should we design as a tactic or a function?
