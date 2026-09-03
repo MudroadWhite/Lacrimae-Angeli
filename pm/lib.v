@@ -1,5 +1,3 @@
-Inductive Term := .
-
 Inductive Op := .
 
 Definition Order (n : nat) : Prop. Admitted.
@@ -41,3 +39,17 @@ f := ([x, y, z], (fun x y z => ...)) with a strict algo to eval, or maybe
 
 without a strict restriction on param list length since idk how to control this
 *)
+
+(* 
+Lemma __placeholder_prop : Prop.
+Admitted.
+
+Ltac saturate_prop_args t :=
+  let ty := type of t in
+  lazymatch ty with
+  | Prop -> ?rest =>
+      let t' := constr:(t __placeholder_prop) in
+      saturate_prop_args t'
+  | _ => t
+  end.
+ *)
