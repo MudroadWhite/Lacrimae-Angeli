@@ -1,5 +1,7 @@
 Inductive Op := .
 
+(* UNUSED: to be specified in the future... *)
+Definition Base : Prop. Admitted.
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
