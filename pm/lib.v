@@ -1,10 +1,13 @@
+(* UNUSED: to be specified in future *)
 Inductive Op := .
 
 (* UNUSED: to be specified in the future... *)
 Definition Base : Prop. Admitted.
+
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
+(* temporary operators *)
 Definition PM_and {n : nat} (X Y : Order n) : Order n. Admitted.
 Example test_and (X Y : Order 1) := PM_and X Y.
 Example test_and_1 (X Y Z : Order 1) := PM_and X (PM_and Y Z).
