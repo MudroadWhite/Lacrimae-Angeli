@@ -1,3 +1,10 @@
+(* 
+TODO:
+1. notation for and, or, neg and impl; scopes
+2. immediately translate definitions in chapter 1 and see if 
+literal props also work out
+*)
+
 (* UNUSED: to be specified in future *)
 Inductive Op := .
 
@@ -21,17 +28,16 @@ Theorem test_axiom (X Y Z : Order 1) :
     (PM_imp (PM_and X (PM_and Y Z)) (PM_and X Y)).
   Admitted.
 
-Theorem test_impl {n : nat} (X Y Z : Order n) :
+Theorem test_impl {n : nat} (X Y : Order n) :
   PM_asserted (PM_imp X Y)
     -> PM_asserted X -> PM_asserted Y. 
   Admitted.
 
-Theorem test_proof (X Y Z : Order 1) :
-  PM_asserted (PM_and X (PM_and Y Z))
-  -> PM_asserted (PM_and X Y).
-Proof.
-  (* TODO: write something... *)
+Example example_theorem (X Y Z : Order 1) :
+  PM_asserted (PM_imp (PM_and X (PM_and Y Z))
+    (PM_and X Y)).
 Admitted.
+
 (* 
 - Should we only shift asserted propositions or directly on propositions? 
 - Should we design as a tactic or a function?
