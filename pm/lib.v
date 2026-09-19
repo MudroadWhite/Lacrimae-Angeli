@@ -8,13 +8,27 @@ literal props also work out
 (* UNUSED: to be specified in future *)
 Inductive Op := .
 
-(* UNUSED: to be specified in the future... *)
-Definition Base : Prop. Admitted.
-
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
 (* temporary operators *)
+(* The `n` also works as a base *)
+
+Declare Scope debug_pm_ops.
+Declare Scope pm_ops.
+
+Open Scope debug_pm_ops.
+Open Scope pm_ops.
+
+(* 
+TODO: add debug operators for pm ops
+*)
+
+(* Notation " A '-[1' x ]> B " := (∀ x, A → B)
+  (at level 80, x binder, B at level 100, right associativity,
+  format "'[ ' A '/' '[ ' -[1 x ]> ']' '/' B ']'")
+  : single_formal_impl. *)
+
 Definition PM_and {n : nat} (X Y : Order n) : Order n. Admitted.
 Example test_and (X Y : Order 1) := PM_and X Y.
 Example test_and_1 (X Y Z : Order 1) := PM_and X (PM_and Y Z).
