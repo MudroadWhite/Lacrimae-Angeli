@@ -16,6 +16,16 @@ Inductive Op := .
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
+Definition is_eprop {n : nat} (p : Order n) : Prop. Admitted.
+(* At this moment we are designing efunc almost the same as eprop. 
+  To be restructured in the future *)
+Definition is_func {n : nat} (p : Order n) : Prop. Admitted.
+
+(* A temporary theorem to be used in future... *)
+Definition order_1_are_eprops : forall (n : nat) (p : Order n),
+  n = 1 -> is_eprop p.
+Admitted.
+
 Declare Scope debug_pm_ops.
 Declare Scope pm_ops.
 
@@ -50,11 +60,11 @@ Notation " A '<imp>' B " := (PM_imp A B)
   : debug_pm_ops.
 Example example_debug_imp_1 (X Y : Order 1) := X <imp> Y.
 
-Definition PM_not {n : nat} (X : Order n) : Order n. Admitted.
-Notation " '<not>' A" := (PM_not A)
+Definition PM_neg {n : nat} (X : Order n) : Order n. Admitted.
+Notation " '<neg>' A" := (PM_neg A)
   (at level 75, A at level 100, right associativity)
   : debug_pm_ops.
-Example example_debug_not_1 (X : Order 1) := <not> X.
+Example example_debug_neg_1 (X : Order 1) := <neg> X.
 
 Definition PM_asserted {n : nat} (X : Order n) : Prop. Admitted.
 Notation "<|-> A" := (PM_asserted A)
@@ -70,6 +80,21 @@ Example example_theorem (X Y Z : Order 1) :
 Example example_impl {n : nat} (X Y : Order n) :
   (<|-> (X <imp> Y)) -> (<|-> X) -> (<|-> Y).
   Admitted.
+
+(* *1.7 *)
+Definition test_n1_7 {n : nat} (P : Order n) : 
+  is_eprop P -> is_eprop (<neg> P).
+Admitted.
+
+(* *1.71 *)
+Definition test_n1_71 {n : nat} (P Q : Order n) :
+  is_eprop P -> is_eprop Q -> is_eprop (P <and> Q).
+Admitted.
+
+(* TODO: design the form for function before expressing this *)
+(* *1.72 *)
+Definition test_n1_72 {n : nat} (Phi Psi : Order n) : Prop.
+Admitted.
 
 Close Scope debug_pm_ops.
 
