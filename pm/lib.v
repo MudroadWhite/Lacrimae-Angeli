@@ -4,7 +4,10 @@ TODO:
     propositional equality in the future?
 2. immediately translate definitions in chapter 1 and see if 
 literal props also work out
-3. Future: reorganize the notation with `Reserved Notation`
+3. Design the function form correctly
+
+Future: 
+1. reorganize the notation with `Reserved Notation`
 *)
 
 (* UNUSED: to be specified in future *)
@@ -13,12 +16,11 @@ Inductive Op := .
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
-(* temporary operators *)
-(* The `n` also works as a base *)
-
 Declare Scope debug_pm_ops.
 Declare Scope pm_ops.
 
+(* Temporary operators definitions. Should be integrated as an inductive type
+  in the future. The `n`s in these operators also work as a base order *)
 Open Scope debug_pm_ops.
 
 Definition PM_and {n : nat} (X Y : Order n) : Order n. Admitted.
@@ -64,9 +66,9 @@ Example example_theorem (X Y Z : Order 1) :
   <|-> (X <and> (Y <and> Z)) <imp> (X <and> Y).
   Admitted.
 
-Theorem test_impl {n : nat} (X Y : Order n) :
-  PM_asserted (PM_imp X Y)
-    -> PM_asserted X -> PM_asserted Y. 
+(* We can distinguish between PM impl and normal Rocq impl *)
+Example example_impl {n : nat} (X Y : Order n) :
+  (<|-> (X <imp> Y)) -> (<|-> X) -> (<|-> Y).
   Admitted.
 
 Close Scope debug_pm_ops.
@@ -85,9 +87,7 @@ f := ([x, y, z], (fun x y z => ...)) with a strict algo to eval, or maybe
      ([1, 1, 1], (fun x y z => ...))  to label the order/type, with a type check before eval(?)
 
 without a strict restriction on param list length since idk how to control this
-*)
 
-(* 
 Lemma __placeholder_prop : Prop.
 Admitted.
 
@@ -99,4 +99,4 @@ Ltac saturate_prop_args t :=
       saturate_prop_args t'
   | _ => t
   end.
- *)
+*)
