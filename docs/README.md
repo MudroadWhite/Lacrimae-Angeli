@@ -4,4 +4,6 @@ Welcome to the Icathia, where Kassadin walks in the void. The inscription you ar
 
 It has been planned, since given instructions have been made in the old world, that what remains to be presented is chaos. Unnecessary Floating Objects embezzling the space, left to be lit from darkness in no time.
 
+Take a comfy seat. Find a theme online, so that all code are rendered black and green.
+
 TODO: search for tools online to give the text a new appearance
