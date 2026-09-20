@@ -108,10 +108,8 @@ Close Scope debug_pm_ops.
 Definition shift : Prop. Admitted.
 
 (* TODO: design the correct form for function. Currently what in mind:
-f := ([x, y, z], (fun x y z => ...)) with a strict algo to eval, or maybe
-     ([1, 1, 1], (fun x y z => ...))  to label the order/type, with a type check before eval(?)
-
-without a strict restriction on param list length since idk how to control this
+f := (^x y z, ...) with a strict algo to eval into a proposition, or abstract
+from a proposition
 
 Lemma __placeholder_prop : Prop.
 Admitted.
