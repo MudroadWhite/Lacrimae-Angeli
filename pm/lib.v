@@ -5,6 +5,7 @@ TODO:
 2. immediately translate definitions in chapter 1 and see if 
 literal props also work out
 3. Design the function form correctly
+4. Design a way to turn a full proposition into a function
 
 Future: 
 1. reorganize the notation with `Reserved Notation`
@@ -16,6 +17,7 @@ Inductive Op := .
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
+(* TODO: in the future, to be more polymorphic, we might want to substitute the `Order n` into something more general... *)
 Definition is_eprop {n : nat} (p : Order n) : Prop. Admitted.
 (* At this moment we are designing efunc almost the same as eprop. 
   To be restructured in the future *)
