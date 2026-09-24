@@ -10,6 +10,7 @@ Function should be able to
 - Apply to parameters
 - Be abstracted away from a proposition
 - Be turned into a quantified prop
+- Have its own specific type
 
 Future: 
 1. reorganize the notation with `Reserved Notation`
