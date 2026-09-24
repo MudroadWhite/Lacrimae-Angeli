@@ -5,7 +5,11 @@ TODO:
 2. immediately translate definitions in chapter 1 and see if 
 literal props also work out
 3. Design the function form correctly
-4. Design a way to turn a full proposition into a function
+
+Function should be able to
+- Apply to parameters
+- Be abstracted away from a proposition
+- Be turned into a quantified prop
 
 Future: 
 1. reorganize the notation with `Reserved Notation`
