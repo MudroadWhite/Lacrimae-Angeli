@@ -1,10 +1,8 @@
 (* 
 TODO:
-1. plan to distinguish between definitional equality and 
-    propositional equality in the future?
-2. immediately translate definitions in chapter 1 and see if 
+1. immediately translate definitions in chapter 1 and see if 
 literal props also work out
-3. Design the function form correctly
+2. Design the function form correctly
 
 Function should be able to
 - Apply to parameters
@@ -14,6 +12,7 @@ Function should be able to
 
 Future: 
 1. reorganize the notation with `Reserved Notation`
+2. Distinguish between def equality and prop equality
 *)
 
 (* UNUSED: to be specified in future *)
