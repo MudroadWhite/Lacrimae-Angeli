@@ -1,4 +1,8 @@
 (* 
+NOTE:
+1. It seems that we have to customize the order to type the expressions and design the 
+typing for it
+
 TODO:
 1. immediately translate definitions in chapter 1 and see if 
 literal props also work out
@@ -17,6 +21,8 @@ Future:
 
 (* UNUSED: to be specified in future *)
 Inductive Op := .
+
+Definition Exp : Type. Admitted.
 
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
@@ -39,48 +45,72 @@ Declare Scope pm_ops.
   in the future. The `n`s in these operators also work as a base order *)
 Open Scope debug_pm_ops.
 
-Definition PM_and {n : nat} (X Y : Order n) : Order n. Admitted.
-Example example_and_1 (X Y : Order 1) := PM_and X Y.
-Example example_and_2 (X Y Z : Order 1) := PM_and X (PM_and Y Z).
+(* Definition PM_and (X Y : Order n) : Order n. Admitted. *)
+Definition PM_and (X Y : Exp) : Exp. Admitted.
+(* Example example_and_1 (X Y : Order 1) := PM_and X Y.
+Example example_and_2 (X Y Z : Order 1) := PM_and X (PM_and Y Z). *)
+Example example_and_1 (X Y : Exp) := PM_and X Y.
+Example example_and_2 (X Y Z : Exp) := PM_and X (PM_and Y Z).
 
 Notation " A '<and>' B " := (PM_and A B)
-  (at level 80, B at level 100, right associativity,
+  (at level 80, B at level 200, right associativity,
   format "'[ ' A '/' '[ ' <and> ']' '/' B ']'")
   : debug_pm_ops.
-Example example_debug_and_1 (X Y : Order 1) := X <and> Y.
+(* Example example_debug_and_1 (X Y : Order 1) := X <and> Y. *)
+Example example_debug_and_1 (X Y : Exp) := X <and> Y.
 
-Definition PM_or {n : nat} (X Y : Order n) : Order n. Admitted.
-Example example_or_1 (X Y : Order 1) := PM_or X Y.
-Example example_or_2 (X Y Z : Order 1) := PM_or X (PM_or Y Z).
+(* Definition PM_or {n : nat} (X Y : Order n) : Order n. Admitted. *)
+Definition PM_or (X Y : Exp) : Exp. Admitted.
+(* Example example_or_1 (X Y : Order 1) := PM_or X Y.
+Example example_or_2 (X Y Z : Order 1) := PM_or X (PM_or Y Z). *)
+Example example_or_1 (X Y : Exp) := PM_or X Y.
+Example example_or_2 (X Y Z : Exp) := PM_or X (PM_or Y Z).
 
 Notation " A '<or>' B " := (PM_or A B)
-  (at level 80, B at level 100, right associativity,
+  (at level 80, B at level 200, right associativity,
   format "'[ ' A '/' '[ ' <or> ']' '/' B ']'")
   : debug_pm_ops.
-Example example_debug_or_1 (X Y : Order 1) := X <or> Y.
+(* Example example_debug_or_1 (X Y : Order 1) := X <or> Y. *)
+Example example_debug_or_1 (X Y : Exp) := X <or> Y.
 
-Definition PM_imp {n : nat} (X Y : Order n) : Order n. Admitted.
+(* Definition PM_imp {n : nat} (X Y : Order n) : Order n. Admitted. *)
+Definition PM_imp (X Y : Exp) : Exp. Admitted.
 Notation " A '<imp>' B " := (PM_imp A B)
-  (at level 73, B at level 100, right associativity,
+  (at level 73, B at level 200, right associativity,
   format "'[ ' A '/' '[ ' <imp> ']' '/' B ']'")
   : debug_pm_ops.
-Example example_debug_imp_1 (X Y : Order 1) := X <imp> Y.
+(* Example example_debug_imp_1 (X Y : Order 1) := X <imp> Y. *)
+Example example_debug_imp_1 (X Y : Exp) := X <imp> Y.
 
-Definition PM_neg {n : nat} (X : Order n) : Order n. Admitted.
+(* Definition PM_neg {n : nat} (X : Order n) : Order n. Admitted. *)
+Definition PM_neg (X : Exp) : Exp. Admitted.
 Notation " '<neg>' A" := (PM_neg A)
-  (at level 75, A at level 100, right associativity)
+  (at level 75, A at level 200, right associativity)
   : debug_pm_ops.
-Example example_debug_neg_1 (X : Order 1) := <neg> X.
+(* Example example_debug_neg_1 (X : Order 1) := <neg> X. *)
+Example example_debug_neg_1 (X : Exp) := <neg> X.
 
-Definition PM_asserted {n : nat} (X : Order n) : Prop. Admitted.
-Notation "<|-> A" := (PM_asserted A)
-  (at level 70, A at level 100, right associativity)
-    : debug_pm_ops.
-Example example_debug_asserted (X : Order 1) := <|-> X.
+(* Definition PM_asserted {n : nat} (X : Order n) : Prop. Admitted. *)
+Definition PM_asserted (X : Exp) (T : Type) : Prop. Admitted.
+(* Notation "<|-> A" := (PM_asserted A)
+  (at level 70, A at level 200, right associativity)
+    : debug_pm_ops. *)
 
-Example example_theorem (X Y Z : Order 1) : 
+Example example_asserted_1 (X : Exp) := PM_asserted X (Order 1).
+
+Notation " '<|->' A : T " := (PM_asserted A T)
+  (at level 80, A at level 9, T at level 200, left associativity)
+  : debug_pm_ops.
+(* Example example_debug_asserted (X : Order 1) := <|-> X. *)
+Example example_debug_asserted (X : Exp) := <|-> X : Order 1.
+
+(* Example example_theorem (X Y Z : Order 1) : 
   <|-> (X <and> (Y <and> Z)) <imp> (X <and> Y).
-  Admitted.
+  Admitted. *)
+
+Example example_theorem (X Y Z : Exp) :
+  <|-> ((X <and> (Y <and> Z)) <imp> (X <and> Y)) : Order 1.
+Admitted.
 
 (* We can distinguish between PM impl and normal Rocq impl *)
 Example example_impl {n : nat} (X Y : Order n) :
@@ -105,7 +135,7 @@ Admitted.
 Close Scope debug_pm_ops.
 
 Open Scope pm_ops.
-Close Scope debug_pm_ops.
+Close Scope pm_ops.
 
 (* 
 - Should we only shift asserted propositions or directly on propositions? 
