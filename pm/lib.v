@@ -2,20 +2,23 @@
 NOTE:
 1. It seems that we have to customize the order to type the expressions and design the 
 typing for it
+2. https://softwarefoundations.cis.upenn.edu/plf-current/Stlc.html
 
 TODO:
 1. immediately translate definitions in chapter 1 and see if 
 literal props also work out
 2. Design the function form correctly
+3. Should I also design an extra syntax to just produce the typed version?
 
 Function should be able to
 - Apply to parameters
 - Be abstracted away from a proposition
 - Be turned into a quantified prop
 - Have its own specific type
+- Deal with situation when it is untyped - when should it be untyped?
 
 Future: 
-1. reorganize the notation with `Reserved Notation`
+1. reorganize the notation with `Reserved Notation`. This also helps eliminating redundant notations in ch9 & 10
 2. Distinguish between def equality and prop equality
 *)
 
