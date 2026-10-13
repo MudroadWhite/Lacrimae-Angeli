@@ -29,12 +29,17 @@ Inductive Op := .
 
 Definition Exp : Type. Admitted.
 
-
+(* TODO: define context with maps *)
 Definition Context (A : option Type) : Type. Admitted.
-
 
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
+
+(* TODO: define notation for eq_order *)
+Definition eq_order {n m : nat} (on : Order n) (om : Order m) : Prop. Admitted.
+
+Axiom eq_nat_order : forall (n m : nat) (on : Order n) (om : Order m),
+  n = m -> eq_order on om.
 
 (* TODO: in the future, to be more polymorphic, we might want to substitute the `Order n` into something more general... *)
 Definition is_eprop {n : nat} (p : Order n) : Prop. Admitted.
