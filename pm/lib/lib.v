@@ -27,6 +27,10 @@ Inductive Op := .
 
 Definition Exp : Type. Admitted.
 
+
+Definition Context (A : option Type) : Type. Admitted.
+
+
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
