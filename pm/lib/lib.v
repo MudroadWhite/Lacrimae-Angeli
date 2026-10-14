@@ -122,7 +122,7 @@ Example example_debug_asserted (X : Exp) := <|-> X : Order 1.
   <|-> (X <and> (Y <and> Z)) <imp> (X <and> Y).
   Admitted. *)
 
-Example example_theorem (X Y Z : Exp) :
+(* Example example_theorem (X Y Z : Exp) :
   <|-> ((X <and> (Y <and> Z)) <imp> (X <and> Y)) : Order 1.
 Admitted.
 
@@ -144,7 +144,7 @@ Admitted.
 (* TODO: design the form for function before expressing this *)
 (* *1.72 *)
 Definition test_n1_72 {n : nat} (Phi Psi : Order n) : Prop.
-Admitted.
+Admitted. *)
 
 Close Scope debug_pm_ops.
 
@@ -173,3 +173,24 @@ Ltac saturate_prop_args t :=
   | _ => t
   end.
 *)
+
+(* **************** *)
+
+(* TODO: add more things to context *)
+Definition context (A : Type) := partial_map A.
+
+(* TODO: to be put into an inductive type in the future *)
+Definition test_typed {A : Type} (c : context A) (P Q : Exp) (type : Type) : Type.
+Admitted.
+
+(* TODO: start typing something specific 
+- a single atomic term 
+- a specific term of `neg`, `and` and `or`
+*)
+Definition text_typing (A : Type) :
+  forall (c : context A) (P Q : Exp) (order : nat),
+    order = 0
+  -> test_typed c P Q (Order 0)
+  -> test_typed c P Q (Order 0).
+Admitted.
+
