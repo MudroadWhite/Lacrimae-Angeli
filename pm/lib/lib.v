@@ -106,9 +106,6 @@ Example example_debug_neg_1 (X : Exp) := <neg> X.
 
 (* Definition PM_asserted {n : nat} (X : Order n) : Prop. Admitted. *)
 Definition PM_asserted (X : Exp) (T : Type) : Prop. Admitted.
-(* Notation "<|-> A" := (PM_asserted A)
-  (at level 70, A at level 200, right associativity)
-    : debug_pm_ops. *)
 
 Example example_asserted_1 (X : Exp) := PM_asserted X (Order 1).
 
@@ -180,7 +177,7 @@ Ltac saturate_prop_args t :=
 Definition context (A : Type) := partial_map A.
 
 (* TODO: to be put into an inductive type in the future *)
-Definition test_typed {A : Type} (c : context A) (P Q : Exp) (type : Type) : Type.
+Definition test_type_asserted {A : Type} (c : context A) (P : Exp) (type : Type) : Type.
 Admitted.
 
 (* TODO: start typing something specific 
@@ -188,9 +185,20 @@ Admitted.
 - a specific term of `neg`, `and` and `or`
 *)
 Definition text_typing (A : Type) :
-  forall (c : context A) (P Q : Exp) (order : nat),
-    order = 0
-  -> test_typed c P Q (Order 0)
-  -> test_typed c P Q (Order 0).
+  forall (c : context A) (P : Exp) (ord : nat),
+  test_type_asserted c P (Order ord)
+  -> test_type_asserted c P (Order ord).
+Admitted.
+
+Definition text_neg_intro (A : Type).
+
+Admitted.
+
+Definition text_and_intro (A : Type).
+
+Admitted.
+
+Definition text_or_intro (A : Type).
+
 Admitted.
 
