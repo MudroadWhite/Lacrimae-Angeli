@@ -29,9 +29,6 @@ Inductive Op := .
 
 Definition Exp : Type. Admitted.
 
-(* TODO: define context with maps *)
-Definition Context (A : option Type) : Type. Admitted.
-
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
@@ -190,15 +187,30 @@ Definition text_typing (A : Type) :
   -> test_type_asserted c P (Order ord).
 Admitted.
 
-Definition text_neg_intro (A : Type).
+Definition text_neg_intro (A : Type) : Prop.
 
 Admitted.
 
-Definition text_and_intro (A : Type).
+Definition text_and_intro (A : Type) : Prop.
 
 Admitted.
 
-Definition text_or_intro (A : Type).
+Definition text_or_intro (A : Type) : Prop.
 
 Admitted.
 
+Open Scope debug_pm_ops.
+
+(* TODO: demonstrate 2.01 *)
+Theorem test_n2_01 {c : context Exp} (P : Exp) :
+  test_type_asserted c
+    ((P <imp> (<neg> P)) <imp> (<neg> P))
+    (Order 0).
+Proof.
+  assert (S1 : P).
+  {
+
+  }
+Admitted.
+
+Close Scope debug_pm_ops.
