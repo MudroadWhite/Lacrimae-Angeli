@@ -5,6 +5,8 @@ NOTE:
 1. It seems that we have to customize the order to type the expressions and design the 
 typing for it
 2. https://softwarefoundations.cis.upenn.edu/plf-current/Stlc.html
+3. https://www.cs.cornell.edu/courses/cs6115/2024fa/lectures/lec26_setoid_rewrite.html TODO: delete?
+4. https://www.cis.upenn.edu/~plclub/blog/2020-05-15-Rewriting-in-Coq/
 
 TODO:
 1. immediately translate definitions in chapter 1 and see if 
@@ -201,15 +203,30 @@ Admitted.
 
 Open Scope debug_pm_ops.
 
+(*
+TODO: 
+- redesign type_asserted into typed + asserted, checking type before asserting them
+- figure out a way to pass in the context
+*)
+
 (* TODO: demonstrate 2.01 *)
 Theorem test_n2_01 {c : context Exp} (P : Exp) :
   test_type_asserted c
     ((P <imp> (<neg> P)) <imp> (<neg> P))
     (Order 0).
 Proof.
-  assert (S1 : P).
+  (* TODO:
+  1. subtype every individuals from the proposition
+  2. fill in all individuals so that they are typed
+  3. use the individuals to construct everything above
+  4. how about filling in parameters for functions..?
+  *)
+  assert (S1 : 
+  test_type_asserted c
+    ((<neg> P) <or> (<neg> P) <imp> (<neg> P))
+    (Order 0)).
   {
-
+    admit.
   }
 Admitted.
 
