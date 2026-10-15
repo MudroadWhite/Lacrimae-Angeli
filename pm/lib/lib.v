@@ -183,21 +183,22 @@ Admitted.
 - a single atomic term 
 - a specific term of `neg`, `and` and `or`
 *)
-Definition text_typing (A : Type) :
+Definition test_typing (A : Type) :
   forall (c : context A) (P : Exp) (ord : nat),
   test_type_asserted c P (Order ord)
   -> test_type_asserted c P (Order ord).
 Admitted.
 
-Definition text_neg_intro (A : Type) : Prop.
+Definition test_neg_intro (A : Type) : Prop.
 
 Admitted.
 
-Definition text_and_intro (A : Type) : Prop.
+(* TODO: type of and/or is the max type for subterm *)
+Definition test_and_intro (A : Type) : Prop.
 
 Admitted.
 
-Definition text_or_intro (A : Type) : Prop.
+Definition test_or_intro (A : Type) : Prop.
 
 Admitted.
 
