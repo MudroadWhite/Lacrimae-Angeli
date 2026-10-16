@@ -47,8 +47,8 @@ Definition is_eprop {n : nat} (p : Order n) : Prop. Admitted.
 Definition is_func {n : nat} (p : Order n) : Prop. Admitted.
 
 (* A temporary theorem to be used in future... *)
-Definition order_1_are_eprops : forall (n : nat) (p : Order n),
-  n = 1 -> is_eprop p.
+Definition 0_are_eprops : forall (n : nat) (p : Order n),
+  n = 0 -> is_eprop p.
 Admitted.
 
 Declare Scope debug_pm_ops.
