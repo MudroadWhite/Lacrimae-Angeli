@@ -1,5 +1,8 @@
 Require Import PM.pm.lib.maps.
 
+Declare Scope debug_pm_ops.
+Declare Scope pm_ops.
+
 (* 
 NOTE:
 1. It seems that we have to customize the order to type the expressions and design the 
@@ -26,10 +29,7 @@ Future:
 2. Distinguish between def equality and prop equality
 *)
 
-Definition Exp : Type. Admitted.
-
-(* TODO: delete the _ prefix when things are done *)
-Module _Exp.
+Module Exp.
   Inductive t : Type := 
     | Var : t
     | Neg : t -> t
@@ -37,88 +37,75 @@ Module _Exp.
     | And : t -> t -> t
     | Imp : t -> t -> t
     .
-End _Exp.
+End Exp.
 
+(* The order type and rules for it *)
 Definition Order (n : nat) : Prop. Admitted.
 Example test_prop : Order 1. Admitted.
 
+(* TODO: in the future, to be more polymorphic, we might want to substitute the `Order n` into something more general... *)
+Definition is_eprop {n : nat} (p : Order n) : Prop. Admitted.
+(* UNUSED *)
+Definition is_func {n : nat} (p : Order n) : Prop. Admitted.
 (* TODO: define notation for eq_order *)
 Definition eq_order {n m : nat} (on : Order n) (om : Order m) : Prop. Admitted.
 
 Axiom eq_nat_order : forall (n m : nat) (on : Order n) (om : Order m),
   n = m -> eq_order on om.
-
-(* TODO: in the future, to be more polymorphic, we might want to substitute the `Order n` into something more general... *)
-Definition is_eprop {n : nat} (p : Order n) : Prop. Admitted.
-(* At this moment we are designing efunc almost the same as eprop. 
-  To be restructured in the future *)
-Definition is_func {n : nat} (p : Order n) : Prop. Admitted.
-
-(* A temporary theorem to be used in future... *)
-Definition order_0_are_eprops : forall (n : nat) (p : Order n),
+Axiom order_0_are_eprops : forall (n : nat) (p : Order n),
   n = 0 -> is_eprop p.
-Admitted.
 
-Declare Scope debug_pm_ops.
-Declare Scope pm_ops.
-
-(* Temporary operators definitions. Should be integrated as an inductive type
-  in the future. The `n`s in these operators also work as a base order *)
 Open Scope debug_pm_ops.
 
-Example example_and_1 (X Y : _Exp.t) := _Exp.And X Y.
-Example example_and_2 (X Y Z : _Exp.t) := _Exp.And X (_Exp.And Y Z).
-
-Notation " A '<and>' B " := (_Exp.And A B)
+Notation " A '<and>' B " := (Exp.And A B)
   (at level 80, B at level 200, right associativity,
   format "'[ ' A '/' '[ ' <and> ']' '/' B ']'")
   : debug_pm_ops.
-Example example_debug_and_1 (X Y : _Exp.t) := X <and> Y.
+Example example_debug_and_1 (X Y : Exp.t) := X <and> Y.
 
-Example example_or_1 (X Y : _Exp.t) := _Exp.Or X Y.
-Example example_or_2 (X Y Z : _Exp.t) := _Exp.Or X (_Exp.Or Y Z).
+Example example_or_1 (X Y : Exp.t) := Exp.Or X Y.
+Example example_or_2 (X Y Z : Exp.t) := Exp.Or X (Exp.Or Y Z).
 
-Notation " A '<or>' B " := (_Exp.Or A B)
+Notation " A '<or>' B " := (Exp.Or A B)
   (at level 80, B at level 200, right associativity,
   format "'[ ' A '/' '[ ' <or> ']' '/' B ']'")
   : debug_pm_ops.
-Example example_debug_or_1 (X Y : _Exp.t) := X <or> Y.
+Example example_debug_or_1 (X Y : Exp.t) := X <or> Y.
 
-Definition PM_imp (X Y : _Exp.t) : _Exp.t. Admitted.
+Definition PM_imp (X Y : Exp.t) : Exp.t. Admitted.
 Notation " A '<imp>' B " := (PM_imp A B)
   (at level 73, B at level 200, right associativity,
   format "'[ ' A '/' '[ ' <imp> ']' '/' B ']'")
   : debug_pm_ops.
-Example example_debug_imp_1 (X Y : _Exp.t) := X <imp> Y.
+Example example_debug_imp_1 (X Y : Exp.t) := X <imp> Y.
 
-Definition PM_neg (X : _Exp.t) : _Exp.t. Admitted.
-Notation " '<neg>' A" := (_Exp.Neg A)
+Definition PM_neg (X : Exp.t) : Exp.t. Admitted.
+Notation " '<neg>' A" := (Exp.Neg A)
   (at level 75, A at level 200, right associativity)
   : debug_pm_ops.
 (* Example example_debug_neg_1 (X : Order 1) := <neg> X. *)
-Example example_debug_neg_1 (X : _Exp.t) := <neg> X.
+Example example_debug_neg_1 (X : Exp.t) := <neg> X.
 
-Definition PM_asserted (X : _Exp.t) (T : Type) : Prop. Admitted.
-Example example_asserted_1 (X : _Exp.t) := PM_asserted X (Order 1).
+(* TODO:
+- to be updated with test_type_asserted 
+- to be put into an inductive type
+- abbreviate `Order 0` when possible
+- context support and abbreviation for context 
+*)
+Definition PM_asserted (X : Exp.t) (T : Type) : Prop. Admitted.
+Example example_asserted_1 (X : Exp.t) := PM_asserted X (Order 1).
 
 Notation " '<|->' A :: T " := (PM_asserted A T)
   (at level 80, A at level 9, T at level 200, left associativity)
   : debug_pm_ops.
-Example example_debug_asserted (X : _Exp.t) := <|-> X :: Order 1.
-
-(* Example example_theorem (X Y Z : Order 1) : 
-  <|-> (X <and> (Y <and> Z)) <imp> (X <and> Y).
-  Admitted. *)
-
-(* Example example_theorem (X Y Z : Exp) :
-  <|-> ((X <and> (Y <and> Z)) <imp> (X <and> Y)) : Order 1.
-Admitted.
-
+Example example_debug_asserted_1 (X : Exp.t) := <|-> X :: Order 0.
+Example example_debug_asserted_2 (X Y Z : Exp.t) :=
+  <|-> ((X <and> (Y <and> Z)) <imp> (X <and> Y)) :: Order 0.
 (* We can distinguish between PM impl and normal Rocq impl *)
-Example example_impl {n : nat} (X Y : Order n) :
-  (<|-> (X <imp> Y)) -> (<|-> X) -> (<|-> Y).
-  Admitted.
+Example example_debug_asserted_3 {n : nat} (X Y : Exp.t) :=
+  (<|-> (X <imp> Y) :: Order 0) -> (<|-> X :: Order 0) -> (<|-> Y :: Order 0).
 
+(* 
 (* *1.7 *)
 Definition test_n1_7 {n : nat} (P : Order n) : 
   is_eprop P -> is_eprop (<neg> P).
@@ -139,13 +126,13 @@ Close Scope debug_pm_ops.
 Open Scope pm_ops.
 Close Scope pm_ops.
 
-(* 
+(* UNUSED. TODO:
 - Should we only shift asserted propositions or directly on propositions? 
 - Should we design as a tactic or a function?
 *)
 Definition shift : Prop. Admitted.
 
-(* TODO: design the correct form for function. Currently what in mind:
+(* DRAFT: design the correct form for function. Currently what in mind:
 f := (^x y z, ...) with a strict algo to eval into a proposition, or abstract
 from a proposition
 
@@ -167,26 +154,21 @@ Ltac saturate_prop_args t :=
 (* TODO: add more things to context 
 - context should somewhat express the maximum proposition order
 - context should also somewhat express the base order
+- implement a init for context
+- recheck `empty` for context
 *)
 Definition context (A : Type) := partial_map A.
 
-(* TODO: to be put into an inductive type in the future *)
-Definition test_type_asserted {A : Type} (c : context A) (P : _Exp.t) (type : Type) : Type.
+Definition test_type_asserted {A : Type} (gamma : context A) (P : Exp.t) (type : Type) 
+  : Prop.
 Admitted.
-
-(* TODO: start typing something specific 
-- a single atomic term 
-- a specific term of `neg`, `and` and `or`
-*)
-Definition test_typing (A : Type) :
-  forall (c : context A) (P : _Exp.t) (ord : nat),
-  test_type_asserted c P (Order ord)
-  -> test_type_asserted c P (Order ord).
-Admitted.
+Example test_type_asserted_1 (A : Type) := forall (gamma : context A) (P : Exp.t) 
+  (ord : nat),
+  test_type_asserted gamma P (Order ord) -> test_type_asserted gamma P (Order ord).
 
 Open Scope debug_pm_ops.
 
-Axiom neg_intro : forall (A : Type) (c : context A) (n : nat) (P : _Exp.t),
+Axiom neg_intro : forall (A : Type) (c : context A) (n : nat) (P : Exp.t),
   test_type_asserted c P (Order n)
   -> test_type_asserted c (<neg> P) (Order n).
 
@@ -205,19 +187,19 @@ Axiom and_intro : forall (A : Type) (c : context A) (n m : nat) (P Q : Exp),
   -> test_type_asserted c Q (Order m)
   -> test_type_asserted c (P <and> Q) (Order (max n m)). *)
 
-Axiom binop_intro : forall {A : Type} (n m : nat) (c : context A) (P Q : _Exp.t)
-  (op : _Exp.t -> _Exp.t -> _Exp.t),
+Axiom binop_intro : forall {A : Type} (n m : nat) (c : context A) (P Q : Exp.t)
+  (op : Exp.t -> Exp.t -> Exp.t),
   test_type_asserted c P (Order n)
   -> test_type_asserted c Q (Order m)
   -> test_type_asserted c (op P Q) (Order (max n m)).
 
-Definition or_intro {A : Type} (n m : nat) (c : context A) (P Q : _Exp.t)
-  := binop_intro n m c P Q (_Exp.Or).
+Definition or_intro {A : Type} (n m : nat) (c : context A) (P Q : Exp.t)
+  := binop_intro n m c P Q (Exp.Or).
 
-Definition and_intro {A : Type} (n m : nat) (c : context A) (P Q : _Exp.t)
-  := binop_intro n m c P Q (_Exp.And).
+Definition and_intro {A : Type} (n m : nat) (c : context A) (P Q : Exp.t)
+  := binop_intro n m c P Q (Exp.And).
 
-Axiom individual_intro : forall {A : Type} (c : context A) (P : _Exp.t),
+Axiom individual_intro : forall {A : Type} (c : context A) (P : Exp.t),
   (* TODO:
   - specify that context has base order
   - state that individual has the base order
@@ -249,7 +231,7 @@ TODO:
 *)
 
 (* TODO: demonstrate 2.01 *)
-Theorem test_n2_01 {c : context _Exp.t} (P : _Exp.t) :
+Theorem test_n2_01 {c : context Exp.t} (P : Exp.t) :
   test_type_asserted c
     ((P <imp> (<neg> P)) <imp> (<neg> P))
     (Order 0).
