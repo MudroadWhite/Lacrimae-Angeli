@@ -103,16 +103,14 @@ Notation " '<neg>' A" := (PM_neg A)
 (* Example example_debug_neg_1 (X : Order 1) := <neg> X. *)
 Example example_debug_neg_1 (X : Exp) := <neg> X.
 
-(* Definition PM_asserted {n : nat} (X : Order n) : Prop. Admitted. *)
 Definition PM_asserted (X : Exp) (T : Type) : Prop. Admitted.
 
 Example example_asserted_1 (X : Exp) := PM_asserted X (Order 1).
 
-Notation " '<|->' A : T " := (PM_asserted A T)
+Notation " '<|->' A :: T " := (PM_asserted A T)
   (at level 80, A at level 9, T at level 200, left associativity)
   : debug_pm_ops.
-(* Example example_debug_asserted (X : Order 1) := <|-> X. *)
-Example example_debug_asserted (X : Exp) := <|-> X : Order 1.
+Example example_debug_asserted (X : Exp) := <|-> X :: Order 1.
 
 (* Example example_theorem (X Y Z : Order 1) : 
   <|-> (X <and> (Y <and> Z)) <imp> (X <and> Y).
@@ -172,7 +170,10 @@ Ltac saturate_prop_args t :=
 
 (* **************** *)
 
-(* TODO: add more things to context *)
+(* TODO: add more things to context 
+- context should somewhat express the maximum proposition order
+- context should also somewhat express the base order
+*)
 Definition context (A : Type) := partial_map A.
 
 (* TODO: to be put into an inductive type in the future *)
@@ -189,25 +190,67 @@ Definition test_typing (A : Type) :
   -> test_type_asserted c P (Order ord).
 Admitted.
 
-Definition test_neg_intro (A : Type) : Prop.
-
-Admitted.
-
-(* TODO: type of and/or is the max type for subterm *)
-Definition test_and_intro (A : Type) : Prop.
-
-Admitted.
-
-Definition test_or_intro (A : Type) : Prop.
-
-Admitted.
-
 Open Scope debug_pm_ops.
+
+Axiom neg_intro : forall (A : Type) (c : context A) (n : nat) (P : Exp),
+  test_type_asserted c P (Order n)
+  -> test_type_asserted c (<neg> P) (Order n).
+
+(* NOTE:
+\/ should have a type of (Order x, Order y) -> Order (max x y); 2 ways to understand \/:
+1. bottom-up: if subterms are typed, \/ can be typed
+2. top-down: if the whole proposition is of type x, \/ should be of type y
+*)
+(* Axiom or_intro : forall (A : Type) (c : context A) (n m : nat) (P Q : Exp),
+  test_type_asserted c P (Order n)
+  -> test_type_asserted c Q (Order m)
+  -> test_type_asserted c (P <or> Q) (Order (max n m)).
+
+Axiom and_intro : forall (A : Type) (c : context A) (n m : nat) (P Q : Exp),
+  test_type_asserted c P (Order n)
+  -> test_type_asserted c Q (Order m)
+  -> test_type_asserted c (P <and> Q) (Order (max n m)). *)
+
+Axiom binop_intro : forall {A : Type} (n m : nat) (c : context A) (P Q : Exp)
+  (op : Exp -> Exp -> Exp),
+  test_type_asserted c P (Order n)
+  -> test_type_asserted c Q (Order m)
+  -> test_type_asserted c (op P Q) (Order (max n m)).
+
+Definition or_intro {A : Type} (n m : nat) (c : context A) (P Q : Exp)
+  := binop_intro n m c P Q (PM_or).
+
+Definition and_intro {A : Type} (n m : nat) (c : context A) (P Q : Exp)
+  := binop_intro n m c P Q (PM_and).
+
+Axiom individual_intro : forall {A : Type} (c : context A) (P : Exp),
+  (* TODO:
+  - specify that context has base order
+  - state that individual has the base order
+  *)
+  test_type_asserted c P (Order 0).
+
+(* TODO: design a rule to work when we need to subst for a theorem *)
+(* Axiom subst_thm : forall {A : Type} (c : context A) (thm : Prop)
+(P : Exp), *)
+
+(* 
+TODO:
+- a special type `PM_Prop` := Prop, but is of a instance of typeclass `Thm`
+typeclass `Thm` allows to extract something..?
+- maybe we need to design a rule `(type -> type) -> (prop -> prop)` to support
+making `assert type` into a prop, or stick with how sf plf makes it 
+*)
+Definition subst_thm {A : Type} (c : context A) (thm : Prop) :=
+  (* ... match thm with *)
+
+
 
 (*
 TODO: 
 - redesign type_asserted into typed + asserted, checking type before asserting them
 - figure out a way to pass in the context
+- when passing in the individuals, should we add them into the context?
 *)
 
 (* TODO: demonstrate 2.01 *)
@@ -217,13 +260,13 @@ Theorem test_n2_01 {c : context Exp} (P : Exp) :
     (Order 0).
 Proof.
   (* TODO:
-  1. subtype every individuals from the proposition
-  2. fill in all individuals so that they are typed
   3. use the individuals to construct everything above
   4. how about filling in parameters for functions..?
   *)
-  assert (S1 : 
-  test_type_asserted c
+  (* NOTE: temp way to properly introduce P with order 0, but how about 
+    other things?... *)
+  pose proof (individual_intro c P) as tP.
+  assert (S1 : test_type_asserted c
     ((<neg> P) <or> (<neg> P) <imp> (<neg> P))
     (Order 0)).
   {
