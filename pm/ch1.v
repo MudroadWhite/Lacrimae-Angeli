@@ -1,8 +1,8 @@
-Require Import PM.pm.lib.
+Require Import PM.pm.lib.lib.
 
 (* 
 TODO: 
-- (*1.7) Design the predicate "is elementary proposition" for Order type. 
+- (\*1.7) Design the predicate "is elementary proposition" for Order type. 
   Should we change `Order` type into a module?
-- (*1.72) Design the predicate "is elementary propositional functions"
+- (\*1.72) Design the predicate "is elementary propositional functions"
 *)
