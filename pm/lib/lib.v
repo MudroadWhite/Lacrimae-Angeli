@@ -31,12 +31,12 @@ Future:
 
 Module Exp.
   Inductive t : Type := 
-    | Var : t
-    | Neg : t -> t
-    | Or : t -> t -> t
-    | And : t -> t -> t
-    | Imp : t -> t -> t
-    .
+  | Var : t
+  | Neg : t -> t
+  | Or : t -> t -> t
+  | And : t -> t -> t
+  | Imp : t -> t -> t
+  .
 End Exp.
 
 (* The order type and rules for it *)
